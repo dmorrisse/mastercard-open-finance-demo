@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mastercard Open Finance (Demo)</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Mastercard Open Finance (Demo)</h1>
+      <div class="pill">Showcasing <strong>Quantum Metric</strong> vs. FullStory</div>
+    </header>
+
+    <section id="login-section" class="card">
+      <h2>1) Log In</h2>
+      <div class="row"><label>Email</label><input id="email" value="demo@user.com" /></div>
+      <div class="row"><label>Password</label><input id="password" type="password" value="demo123" /></div>
+      <button id="loginBtn">Sign in</button>
+      <div id="loginStatus" class="status"></div>
+    </section>
+
+    <section id="accounts-section" class="card hidden">
+      <h2>2) Accounts</h2>
+      <button id="loadAccountsBtn">Load Linked Accounts</button>
+      <div id="accountsList" class="list"></div>
+    </section>
+
+    <section id="transfer-section" class="card hidden">
+      <h2>3) Transfer</h2>
+      <div class="row"><label>From</label><select id="fromAccount"></select></div>
+      <div class="row"><label>To</label><select id="toAccount"></select></div>
+      <div class="row">
+        <label>Amount (USD)</label>
+        <input id="amount" placeholder="Try 10.25 to trigger error" />
+      </div>
+      <div class="row"><label>Memo</label><input id="memo" placeholder="Optional" /></div>
+      <button id="transferBtn">Submit Transfer</button>
+      <div id="transferStatus" class="status"></div>
+    </section>
+
+    <section class="card">
+      <h2>4) Demo notes</h2>
+      <ul>
+        <li>Type <b>10.25</b> and submit to trigger an HTTP 500 (intentional).</li>
+        <li>Quantum Metric Chrome extension will capture the replay and network error.</li>
+      </ul>
+    </section>
+  </div>
+
+  <script type="module" src="/script.js"></script>
+</body>
+</html>
