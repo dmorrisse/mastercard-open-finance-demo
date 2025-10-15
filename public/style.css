@@ -1,92 +1,111 @@
 body {
-  font-family: "Inter", sans-serif;
-  background: #fafafa;
-  color: #222;
+  font-family: "Inter", Helvetica, sans-serif;
+  background: #f7f8fa;
+  color: #0b0b45;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 }
 
-section {
-  display: none;
-  flex-direction: column;
+#app { width: 350px; }
+
+.app-header {
+  display: flex;
   align-items: center;
-  text-align: center;
-  width: 320px;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
-section.active {
-  display: flex;
+.app-logo {
+  height: 40px;
+  width: auto;
 }
+
+.card {
+  display: none;
+  background: #fff;
+  padding: 24px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.card.active { display: block; }
 
 input, button {
-  margin: 8px;
+  margin: 8px 0;
   padding: 10px;
   width: 100%;
   border-radius: 6px;
   border: 1px solid #ccc;
+  font-size: 0.95rem;
 }
 
 button {
-  background: #c54b22;
-  color: #fff;
+  background: #eb5a2b;
+  color: white;
   font-weight: 600;
   border: none;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
-button:hover {
-  background: #a83e1c;
-}
+button:hover { background: #c94a22; }
 
-.hidden { display: none; }
-
-.consent-card {
-  background: #fff;
-  border-radius: 10px;
-  padding: 24px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.icons {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  font-size: 2rem;
-}
-
-.mc-logo { width: 50px; }
-.mc-small { width: 30px; vertical-align: middle; }
-
-.info-box {
-  border: 1px solid #ddd;
+#banner {
+  text-align: center;
+  background: #fbe8e8;
+  color: #c94a22;
+  border: 1px solid #e3a3a3;
   border-radius: 6px;
   padding: 10px;
-  margin: 10px 0;
+  margin-bottom: 10px;
+}
+
+.hidden { display: none !important; }
+
+.bank-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.bankBtn {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.bankBtn img {
+  height: 40px;
+  width: auto;
+}
+
+.info-list {
+  list-style: none;
   text-align: left;
+  padding: 0;
+  margin: 10px 0;
   font-size: 0.9rem;
 }
 
 .fineprint {
   font-size: 0.75rem;
-  color: #666;
+  color: #555;
 }
 
-.secured {
-  margin-top: 10px;
-  font-size: 0.8rem;
-  color: #888;
+.mc-logo {
+  width: 70px;
+  margin-bottom: 10px;
 }
 
-.bank-list {
-  display: grid;
-  gap: 8px;
-  width: 100%;
-}
-
-.bankBtn {
-  background: #fff;
-  color: #222;
-  border: 1px solid #ccc;
+#spinner {
+  text-align: center;
+  margin-top: 20px;
+  font-weight: 600;
+  color: #0b0b45;
 }
