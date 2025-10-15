@@ -1,24 +1,31 @@
-// Quantum Pay Demo Server – Final Version
+// server.js
 import express from "express";
 import path from "path";
-import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 const app = express();
-app.use(bodyParser.json());
+
+// Serve static files (HTML, CSS, images)
 app.use(express.static(path.join(__dirname, "public")));
 
-let bankAttempts = {};
-const users = ["dan", "sarah", "alex", "maria"];
+// Default route - send index.html
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
-app.post("/api/login", (req, res) => res.json({ success: true }));
-
-app.post("/api/search-user", (req, res) => {
-  const { name } = req.body;
-  if (!name || name.toLowerCase().includes("x")) {
-    console.error("Quantum Pay Error: USER_NOT_FOUND");
-    return res.status(404).json({ error: "USER_NOT_FOUND" });
+// Example route to simulate a bank connection failure
+app.get("/api/connect-bank", (req, res) => {
+  const bank = req.query.bank;
+  if (bank === "Citi") {
+    return res.status(500).json({ error: "Unable to connect to bank at this time." });
   }
-  res.json({
+  return res.json({ success: true });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Quantum Pay server running on port ${PORT}`);
+});
