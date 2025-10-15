@@ -1,14 +1,15 @@
 {
-  "name": "mastercard-open-finance-demo",
+  "name": "quantum-pay",
   "version": "1.0.0",
-  "description": "Mock Mastercard Open Finance flow for Quantum Metric demo",
+  "description": "Quantum Pay demo web app for Mastercard Open Finance and Quantum Metric",
   "main": "server.js",
   "type": "module",
-  "scripts": { "start": "node server.js" },
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
-    "body-parser": "^1.20.2",
-    "cors": "^2.8.5",
     "express": "^4.19.2",
-    "uuid": "^9.0.1"
+    "body-parser": "^1.20.2"
   }
 }
+
