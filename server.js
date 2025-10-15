@@ -13,4 +13,5 @@ app.get("*", (req, res) => {
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Quantum Pay running on port ${port}`));
+app.listen(port, () => console.log(`✅ Quantum Pay running on port ${port}`));
+
