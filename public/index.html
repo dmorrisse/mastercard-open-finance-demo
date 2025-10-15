@@ -8,77 +8,74 @@
 </head>
 <body>
   <div id="app">
+    <header class="app-header">
+      <img src="https://quartermanfinancial.com/wp-content/uploads/2024/04/qf-logo-dark.svg"
+           alt="Quarterman Financial" class="app-logo"/>
+      <h1>Quantum Pay</h1>
+    </header>
+
+    <div id="banner" class="hidden"></div>
 
     <!-- LOGIN -->
-    <section id="login" class="active">
+    <section id="login" class="active card">
       <h2>Welcome to Quantum Pay</h2>
       <input id="email" placeholder="Email" type="email" />
       <input id="password" placeholder="Password" type="password" />
       <button id="loginBtn">Login</button>
     </section>
 
-    <!-- PAY SOMEONE -->
-    <section id="pay">
-      <h2>Pay Someone</h2>
+    <!-- PAY -->
+    <section id="pay" class="card">
+      <h2>Send Money</h2>
       <input id="recipient" placeholder="Recipient name" />
       <input id="amount" type="number" placeholder="Amount ($)" />
       <button id="continueToConsent">Continue</button>
     </section>
 
-    <!-- MASTERCARD CONSENT -->
-    <section id="consent">
-      <div class="consent-card">
-        <div class="icons">
-          <span>🤳</span>
-          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="mc-logo"/>
-          <span>🏦</span>
-        </div>
-        <h3><strong>Quantum Pay</strong> uses <strong>Mastercard Data Connect</strong> to link your accounts.</h3>
-        <div class="info-box">
-          <p>🔒 Your data will be securely accessed, processed, and shared.</p>
-          <p>✅ Your data will only be saved and used with your permission.</p>
-        </div>
-        <p class="fineprint">
-          By pressing <b>Next</b>, you agree to the Mastercard Data Connect 
-          <a href="#">Terms of Use</a> and acknowledge the 
-          <a href="#">Privacy Notice</a>.
-        </p>
-        <button id="toBankList" class="cta">Next</button>
-        <div class="secured">secured by <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="mc-small"/></div>
-      </div>
+    <!-- CONSENT -->
+    <section id="consent" class="card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="mc-logo"/>
+      <h3><strong>Quantum Pay</strong> uses <strong>Mastercard Data Connect</strong> to link your accounts.</h3>
+      <ul class="info-list">
+        <li>🔒 Your data is securely accessed, processed, and shared.</li>
+        <li>✅ Data is only used with your permission.</li>
+      </ul>
+      <p class="fineprint">
+        By pressing <b>Next</b>, you agree to the Mastercard Data Connect 
+        <a href="#">Terms of Use</a> and <a href="#">Privacy Notice</a>.
+      </p>
+      <button id="toBankList" class="cta">Next</button>
     </section>
 
-    <!-- BANK SELECTION -->
-    <section id="bankSelect">
+    <!-- BANKS -->
+    <section id="bankSelect" class="card">
       <h2>Select your bank</h2>
-      <div class="bank-list">
-        <button class="bankBtn" data-bank="Chase">Chase</button>
-        <button class="bankBtn" data-bank="Citi">Citi</button>
-        <button class="bankBtn" data-bank="Wells Fargo">Wells Fargo</button>
-        <button class="bankBtn" data-bank="Bank of America">Bank of America</button>
+      <div class="bank-grid">
+        <button class="bankBtn" data-bank="Chase">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Chase_logo_2019.svg" alt="Chase"/>
+        </button>
+        <button class="bankBtn" data-bank="Citi">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Citi.svg" alt="Citi"/>
+        </button>
+        <button class="bankBtn" data-bank="Wells Fargo">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/7/7f/Wells_Fargo_Bank.svg" alt="Wells Fargo"/>
+        </button>
+        <button class="bankBtn" data-bank="Bank of America">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/1/16/Bank_of_America_logo.svg" alt="BoA"/>
+        </button>
       </div>
       <div id="bankLogin" class="hidden">
         <input id="bankUser" placeholder="Username" />
-        <input id="bankPass" placeholder="Password" type="password" />
+        <input id="bankPass" type="password" placeholder="Password" />
         <button id="connectBank">Connect Bank</button>
       </div>
     </section>
 
     <!-- FUNDING -->
-    <section id="funding">
+    <section id="funding" class="card">
       <h2>Confirm Payment</h2>
       <p id="fundDetails"></p>
       <button id="confirmFund">Confirm Payment</button>
     </section>
 
     <!-- SUCCESS -->
-    <section id="success">
-      <h2>Payment Complete</h2>
-      <p>Your payment has been successfully processed.</p>
-      <button id="restart">Make Another Payment</button>
-    </section>
-
-  </div>
-  <script src="script.js"></script>
-</body>
-</html>
