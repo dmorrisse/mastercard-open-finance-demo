@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Select Bank</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <h2>Select Your Bank</h2>
+
+  <div class="bank" onclick="connectBank('Chase')">
+    <img src="https://upload.wikimedia.org/wikipedia/en/6/6f/JPMorgan_Chase_Logo_2008.svg">
+    <span>Chase Bank</span>
+  </div>
+
+  <div class="bank" onclick="connectBank('Citi')">
+    <img src="https://upload.wikimedia.org/wikipedia/en/7/7e/Citi.svg">
+    <span>Citi Bank</span>
+  </div>
+
+  <div class="bank" onclick="connectBank('BoA')">
+    <img src="https://upload.wikimedia.org/wikipedia/en/4/4a/Bank_of_America_logo.svg">
+    <span>Bank of America</span>
+  </div>
+
+  <div class="bank" onclick="connectBank('PNC')">
+    <img src="https://upload.wikimedia.org/wikipedia/en/2/28/PNC_Financial_Services_logo.svg">
+    <span>PNC Bank</span>
+  </div>
+
+  <p id="error" class="error"></p>
+</div>
+
+<script src="script.js"></script>
+<script>
+function connectBank(name){
+  if(name==='Citi'){
+    document.getElementById('error').innerText='Unable to connect to Citi Bank. Please try again.';
+    // QM Replay trigger here
+  } else {
+    go('funding.html');
+  }
+}
+</script>
+</body></html>
