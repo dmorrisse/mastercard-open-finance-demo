@@ -1,17 +1,92 @@
-:root{--brand:#0a2540;--accent:#ff5f00;--muted:#eef2f7;--ok:#0a8f3b;--err:#b00020}
-*{box-sizing:border-box}
-body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--muted);color:#111}
-.wrap{max-width:960px;margin:40px auto;padding:0 16px}
-header{margin-bottom:24px}
-h1{margin:0 0 8px;color:var(--brand)}
-.pill{display:inline-block;padding:6px 10px;background:#fff;border-radius:999px;border:1px solid #ddd}
-.card{background:#fff;border-radius:14px;padding:16px;margin:16px 0;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-.hidden{display:none}
-.row{display:grid;grid-template-columns:140px 1fr;gap:12px;align-items:center;margin:10px 0}
-label{color:#555}
-input,select{padding:10px;border:1px solid #ccc;border-radius:10px;width:100%}
-button{background:var(--accent);color:#fff;padding:10px 14px;border:0;border-radius:10px;cursor:pointer;font-weight:600}
-button:hover{filter:brightness(.95)}
-.status{margin-top:10px;min-height:20px}
-.status.ok{color:var(--ok)} .status.err{color:var(--err)}
-.hint{color:#666;font-size:.95rem}
+body {
+  font-family: "Inter", sans-serif;
+  background: #fafafa;
+  color: #222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+section {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 320px;
+}
+
+section.active {
+  display: flex;
+}
+
+input, button {
+  margin: 8px;
+  padding: 10px;
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background: #c54b22;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #a83e1c;
+}
+
+.hidden { display: none; }
+
+.consent-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.icons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.mc-logo { width: 50px; }
+.mc-small { width: 30px; vertical-align: middle; }
+
+.info-box {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px;
+  margin: 10px 0;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.fineprint {
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.secured {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.bank-list {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+}
+
+.bankBtn {
+  background: #fff;
+  color: #222;
+  border: 1px solid #ccc;
+}
