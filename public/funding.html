@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Funding Confirmation</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <h2>Confirm Funding Source</h2>
+  <p>We’ll verify your bank before sending money.</p>
+  <button onclick="tryFunding()">Confirm</button>
+  <p id="error" class="error"></p>
+</div>
+
+<script src="script.js"></script>
+<script>
+function tryFunding(){
+  const fail=Math.random()<0.4;
+  if(fail){
+    document.getElementById('error').innerText='We are unable to complete your payment at this time.';
+    // QM Replay trigger here
+  } else {
+    go('success.html');
+  }
+}
+</script>
+</body></html>
