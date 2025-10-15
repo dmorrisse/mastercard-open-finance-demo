@@ -1,132 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quantum Pay Login</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background: #f7f8fa;
-      font-family: 'Poppins', sans-serif;
-      color: #0b0b45;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .container {
-      background: white;
-      padding: 40px 30px;
-      border-radius: 12px;
-      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-      text-align: center;
-      width: 360px;
-      animation: fadeIn 0.7s ease;
-    }
-
-    header {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    header svg {
-      width: 36px;
-      height: 36px;
-      fill: #eb5a2b;
-    }
-
-    h1 {
-      font-weight: 700;
-      font-size: 1.6rem;
-      margin: 0;
-    }
-
-    h2 {
-      font-weight: 500;
-      font-size: 1rem;
-      margin-top: 4px;
-      color: #333;
-    }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-      outline: none;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background: #eb5a2b;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: background 0.3s;
-    }
-
-    button:hover {
-      background: #cf4f26;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    footer {
-      margin-top: 18px;
-      font-size: 0.8rem;
-      color: #777;
-    }
-  </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Quantum Pay Login</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <!-- Inline SVG Bank Icon -->
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-        <path d="M256 0C237.6 0 224 13.6 224 32V64H96C60.7 64 32 92.7 32 128V384H0V448H512V384H480V128C480 92.7 451.3 64 416 64H288V32C288 13.6 274.4 0 256 0zM96 128H416V384H96V128zM144 160V352H176V160H144zM240 160V352H272V160H240zM336 160V352H368V160H336z"/>
-      </svg>
-      <h1>Quantum Pay</h1>
-    </header>
+<div class="container">
+  <h1>Quantum Pay</h1>
+  <h3>Welcome Back</h3>
+  <input id="user" placeholder="Username" />
+  <input id="pass" type="password" placeholder="Password" />
+  <button onclick="login()">Login</button>
+  <footer>Secured by Mastercard</footer>
+</div>
+<script src="script.js"></script>
+<script>
+function login(){
+  if(document.getElementById('user').value && document.getElementById('pass').value)
+    go('home.html');
+  else alert('Please enter credentials');
+}
+</script>
+</body></html>
 
-    <h2>Welcome to Quantum Pay</h2>
-
-    <form id="loginForm">
-      <input type="text" id="username" placeholder="Username" required />
-      <input type="password" id="password" placeholder="Password" required />
-      <button type="submit">Login</button>
-    </form>
-
-    <footer>Secured by Mastercard</footer>
-  </div>
-
-  <script>
-    document.getElementById("loginForm").addEventListener("submit", function(event) {
-      event.preventDefault();
-      // simple mock auth
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-      if (username && password) {
-        window.location.href = "/home.html";
-      } else {
-        alert("Please enter your login credentials.");
-      }
-    });
-  </script>
-</body>
-</html>
