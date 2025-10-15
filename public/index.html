@@ -3,79 +3,115 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quantum Pay</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Quantum Pay Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #f7f8fa;
+      font-family: 'Poppins', sans-serif;
+      color: #0b0b45;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      text-align: center;
+      width: 350px;
+    }
+    header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    header img {
+      height: 36px;
+      width: 36px;
+    }
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 0;
+      color: #0b0b45;
+    }
+    .card {
+      background: #fff;
+      padding: 28px 24px;
+      border-radius: 12px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    }
+    .card h2 {
+      margin-top: 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    input {
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button {
+      width: 100%;
+      margin-top: 12px;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background: #eb5a2b;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    button:hover {
+      background: #cf4f26;
+    }
+    footer {
+      margin-top: 18px;
+      font-size: 0.75rem;
+      color: #999;
+    }
+  </style>
 </head>
 <body>
-  <div id="app">
-    <header class="app-header">
-      <img src="https://quartermanfinancial.com/wp-content/uploads/2024/04/qf-logo-dark.svg"
-           alt="Quarterman Financial" class="app-logo"/>
+  <div class="container">
+    <header>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/8b/Bank_font_awesome.svg" alt="Bank icon">
       <h1>Quantum Pay</h1>
     </header>
 
-    <div id="banner" class="hidden"></div>
-
-    <!-- LOGIN -->
-    <section id="login" class="active card">
+    <div class="card">
       <h2>Welcome to Quantum Pay</h2>
       <input id="email" placeholder="Email" type="email" />
       <input id="password" placeholder="Password" type="password" />
       <button id="loginBtn">Login</button>
-    </section>
+      <p id="status" style="margin-top:12px;font-size:0.9rem;color:#666;"></p>
+    </div>
 
-    <!-- PAY -->
-    <section id="pay" class="card">
-      <h2>Send Money</h2>
-      <input id="recipient" placeholder="Recipient name" />
-      <input id="amount" type="number" placeholder="Amount ($)" />
-      <button id="continueToConsent">Continue</button>
-    </section>
+    <footer>
+      © 2025 Quantum Pay | Secured by Mastercard
+    </footer>
+  </div>
 
-    <!-- CONSENT -->
-    <section id="consent" class="card">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="mc-logo"/>
-      <h3><strong>Quantum Pay</strong> uses <strong>Mastercard Data Connect</strong> to link your accounts.</h3>
-      <ul class="info-list">
-        <li>🔒 Your data is securely accessed, processed, and shared.</li>
-        <li>✅ Data is only used with your permission.</li>
-      </ul>
-      <p class="fineprint">
-        By pressing <b>Next</b>, you agree to the Mastercard Data Connect 
-        <a href="#">Terms of Use</a> and <a href="#">Privacy Notice</a>.
-      </p>
-      <button id="toBankList" class="cta">Next</button>
-    </section>
+  <script>
+    const loginBtn = document.getElementById("loginBtn");
+    const status = document.getElementById("status");
 
-    <!-- BANKS -->
-    <section id="bankSelect" class="card">
-      <h2>Select your bank</h2>
-      <div class="bank-grid">
-        <button class="bankBtn" data-bank="Chase">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Chase_logo_2019.svg" alt="Chase"/>
-        </button>
-        <button class="bankBtn" data-bank="Citi">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Citi.svg" alt="Citi"/>
-        </button>
-        <button class="bankBtn" data-bank="Wells Fargo">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/7/7f/Wells_Fargo_Bank.svg" alt="Wells Fargo"/>
-        </button>
-        <button class="bankBtn" data-bank="Bank of America">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/1/16/Bank_of_America_logo.svg" alt="BoA"/>
-        </button>
-      </div>
-      <div id="bankLogin" class="hidden">
-        <input id="bankUser" placeholder="Username" />
-        <input id="bankPass" type="password" placeholder="Password" />
-        <button id="connectBank">Connect Bank</button>
-      </div>
-    </section>
+    loginBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      loginBtn.innerText = "Verifying...";
+      status.innerText = "";
 
-    <!-- FUNDING -->
-    <section id="funding" class="card">
-      <h2>Confirm Payment</h2>
-      <p id="fundDetails"></p>
-      <button id="confirmFund">Confirm Payment</button>
-    </section>
-
-    <!-- SUCCESS -->
+      setTimeout(() => {
+        window.location.href = "/bank-connect.html";
+      }, 1200);
+    });
+  </script>
+</body>
+</html>
