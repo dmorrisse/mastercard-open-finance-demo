@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quantum Pay Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #f7f8fa;
+      font-family: 'Poppins', sans-serif;
+      color: #0b0b45;
+      margin: 0;
+      text-align: center;
+      padding-top: 80px;
+    }
+    header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+    header img {
+      height: 40px;
+      width: 40px;
+    }
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    .card {
+      background: #fff;
+      padding: 28px 24px;
+      border-radius: 12px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+      width: 340px;
+      margin: 0 auto;
+    }
+    .balance {
+      font-size: 1.2rem;
+      color: #0b0b45;
+      margin-bottom: 16px;
+    }
+    button {
+      width: 100%;
+      margin-top: 12px;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background: #eb5a2b;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    button:hover {
+      background: #cf4f26;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/8b/Bank_font_awesome.svg" alt="Bank Icon">
+    <h1>Quantum Pay</h1>
+  </header>
+
+  <div class="card">
+    <p class="balance">Available balance: $1,245.50</p>
+    <button id="connectBankBtn">Connect your bank</button>
+  </div>
+
+  <script>
+    document.getElementById("connectBankBtn").addEventListener("click", () => {
+      window.location.href = "/bank-connect.html";
+    });
+  </script>
+</body>
+</html>
