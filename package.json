@@ -1,0 +1,14 @@
+{
+  "name": "mastercard-open-finance-demo",
+  "version": "1.0.0",
+  "description": "Mock Mastercard Open Finance flow for Quantum Metric demo",
+  "main": "server.js",
+  "type": "module",
+  "scripts": { "start": "node server.js" },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "uuid": "^9.0.1"
+  }
+}
