@@ -1,58 +1,84 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DemoPay — Connect bank & transfer (Demo)</title>
-  <link rel="stylesheet" href="/style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quantum Pay</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <h1>DemoPay (Fake demo)</h1>
-      <div class="pill">Connect a bank, reproduce an error, then complete a transfer</div>
-    </header>
+  <div id="app">
 
-    <section class="card">
-      <h2>1) Sign in</h2>
-      <div class="row"><label>Email</label><input id="email" value="demo@user.com" /></div>
-      <div class="row"><label>Password</label><input id="password" type="password" value="demo123" /></div>
-      <button id="loginBtn">Sign in</button>
-      <div id="loginStatus" class="status"></div>
+    <!-- LOGIN -->
+    <section id="login" class="active">
+      <h2>Welcome to Quantum Pay</h2>
+      <input id="email" placeholder="Email" type="email" />
+      <input id="password" placeholder="Password" type="password" />
+      <button id="loginBtn">Login</button>
     </section>
 
-    <section id="connect-card" class="card hidden">
-      <h2>2) Connect a bank</h2>
-      <div class="row"><label>Select bank</label>
-        <select id="bankSelect"></select>
+    <!-- PAY SOMEONE -->
+    <section id="pay">
+      <h2>Pay Someone</h2>
+      <input id="recipient" placeholder="Recipient name" />
+      <input id="amount" type="number" placeholder="Amount ($)" />
+      <button id="continueToConsent">Continue</button>
+    </section>
+
+    <!-- MASTERCARD CONSENT -->
+    <section id="consent">
+      <div class="consent-card">
+        <div class="icons">
+          <span>🤳</span>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="mc-logo"/>
+          <span>🏦</span>
+        </div>
+        <h3><strong>Quantum Pay</strong> uses <strong>Mastercard Data Connect</strong> to link your accounts.</h3>
+        <div class="info-box">
+          <p>🔒 Your data will be securely accessed, processed, and shared.</p>
+          <p>✅ Your data will only be saved and used with your permission.</p>
+        </div>
+        <p class="fineprint">
+          By pressing <b>Next</b>, you agree to the Mastercard Data Connect 
+          <a href="#">Terms of Use</a> and acknowledge the 
+          <a href="#">Privacy Notice</a>.
+        </p>
+        <button id="toBankList" class="cta">Next</button>
+        <div class="secured">secured by <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="mc-small"/></div>
       </div>
-      <div class="row"><label>Bank username</label><input id="bankUser" placeholder="user123" /></div>
-      <div class="row"><label>Bank password</label><input id="bankPass" type="password" placeholder="Try 'wrongpass' first" /></div>
-      <button id="connectBtn">Connect bank</button>
-      <div id="connectStatus" class="status"></div>
-
-      <p class="hint">Tip: For the <strong>Intermittent Bank</strong>, enter <code>wrongpass</code> to trigger an auth error, then try <code>correct123</code> to succeed.</p>
     </section>
 
-    <section id="transfer-card" class="card hidden">
-      <h2>3) Transfer money</h2>
-      <div class="row"><label>From</label><select id="fromAccount"><option>Checking • Demo</option></select></div>
-      <div class="row"><label>To</label><input id="toAccount" placeholder="Recipient handle or account" /></div>
-      <div class="row"><label>Amount</label><input id="amount" placeholder="Whole dollars succeed, decimals trigger server error (e.g. 10.25)" /></div>
-      <div class="row"><label>Memo</label><input id="memo" /></div>
-      <button id="transferBtn">Send</button>
-      <div id="transferStatus" class="status"></div>
+    <!-- BANK SELECTION -->
+    <section id="bankSelect">
+      <h2>Select your bank</h2>
+      <div class="bank-list">
+        <button class="bankBtn" data-bank="Chase">Chase</button>
+        <button class="bankBtn" data-bank="Citi">Citi</button>
+        <button class="bankBtn" data-bank="Wells Fargo">Wells Fargo</button>
+        <button class="bankBtn" data-bank="Bank of America">Bank of America</button>
+      </div>
+      <div id="bankLogin" class="hidden">
+        <input id="bankUser" placeholder="Username" />
+        <input id="bankPass" placeholder="Password" type="password" />
+        <button id="connectBank">Connect Bank</button>
+      </div>
     </section>
 
-    <section class="card">
-      <h2>Notes for your demo</h2>
-      <ul>
-        <li>Show the bank auth error first (enter <code>wrongpass</code>), open the session recording to highlight the network error and UI state.</li>
-        <li>Then correct credentials and connect. Proceed to transfer; use a decimal amount (e.g. <code>10.25</code>) to reproduce the transfer server error.</li>
-      </ul>
+    <!-- FUNDING -->
+    <section id="funding">
+      <h2>Confirm Payment</h2>
+      <p id="fundDetails"></p>
+      <button id="confirmFund">Confirm Payment</button>
     </section>
+
+    <!-- SUCCESS -->
+    <section id="success">
+      <h2>Payment Complete</h2>
+      <p>Your payment has been successfully processed.</p>
+      <button id="restart">Make Another Payment</button>
+    </section>
+
   </div>
-
-  <script type="module" src="/script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
