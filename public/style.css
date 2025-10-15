@@ -99,3 +99,30 @@ input {
   font-size: 0.95rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
+.brand-header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.brand-icon {
+  width: 28px;
+  height: 28px;
+  fill: #f36f21;
+}
+
+.brand-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #0b0b33;
+  letter-spacing: -0.5px;
+}
+
