@@ -1,69 +1,74 @@
-const loginBtn = document.getElementById("loginBtn");
-const loginStatus = document.getElementById("loginStatus");
-const accountsSection = document.getElementById("accounts-section");
-const transferSection = document.getElementById("transfer-section");
-const loadAccountsBtn = document.getElementById("loadAccountsBtn");
-const accountsList = document.getElementById("accountsList");
-const fromSel = document.getElementById("fromAccount");
-const toSel = document.getElementById("toAccount");
-const transferBtn = document.getElementById("transferBtn");
-const transferStatus = document.getElementById("transferStatus");
-let authToken = null;
-let cachedAccounts = [];
+const sections = document.querySelectorAll("section");
+function show(id) {
+  sections.forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
 
-loginBtn.addEventListener("click", async () => {
-  loginStatus.textContent = "Signing in...";
+let sessionId = Date.now().toString();
+let currentBank = "";
+let recipient = "";
+let amount = "";
+
+document.getElementById("loginBtn").onclick = async () => {
+  await fetch("/api/login", { method: "POST" });
+  show("pay");
+};
+
+document.getElementById("continueToConsent").onclick = async () => {
+  recipient = document.getElementById("recipient").value;
+  amount = document.getElementById("amount").value;
   try {
-    const r = await fetch("/api/login", {
+    const res = await fetch("/api/search-user", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: document.getElementById("email").value.trim(),
-        password: document.getElementById("password").value
-      })
+      body: JSON.stringify({ name: recipient })
     });
-    if (!r.ok) throw new Error("Invalid credentials");
-    const data = await r.json();
-    authToken = data.token;
-    loginStatus.textContent = `Welcome, ${data.name}.`;
-    accountsSection.classList.remove("hidden");
-  } catch (e) {
-    loginStatus.textContent = e.message;
+    if (!res.ok) throw new Error("USER_NOT_FOUND");
+    show("consent");
+  } catch (err) {
+    console.error("Quantum Pay Error:", err.message);
+    show("consent"); // still continue
   }
-});
+};
 
-loadAccountsBtn.addEventListener("click", async () => {
-  accountsList.textContent = "Loading accounts...";
-  const r = await fetch("/api/accounts");
-  const data = await r.json();
-  cachedAccounts = data.accounts;
-  accountsList.innerHTML = cachedAccounts
-    .map(a => `<div class="acct"><strong>${a.name}</strong> — ${a.type} • ${a.currency} ${a.balance}</div>`)
-    .join("");
-  fromSel.innerHTML = cachedAccounts.map(a => `<option value="${a.id}">${a.name}</option>`).join("");
-  toSel.innerHTML = cachedAccounts.map(a => `<option value="${a.id}">${a.name}</option>`).join("");
-  transferSection.classList.remove("hidden");
-});
+document.getElementById("toBankList").onclick = () => show("bankSelect");
 
-transferBtn.addEventListener("click", async () => {
-  transferStatus.textContent = "Submitting transfer...";
-  const payload = {
-    fromId: fromSel.value,
-    toId: toSel.value,
-    amount: document.getElementById("amount").value,
-    memo: document.getElementById("memo").value
+document.querySelectorAll(".bankBtn").forEach(btn => {
+  btn.onclick = () => {
+    currentBank = btn.dataset.bank;
+    document.getElementById("bankLogin").classList.remove("hidden");
   };
-  const r = await fetch("/api/transfer", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${authToken}` },
-    body: JSON.stringify(payload)
-  });
-  if (!r.ok) {
-    const err = await r.json();
-    transferStatus.textContent = `Transfer failed: ${err.error}`;
-    try { window.__demo.boom.prop = 1; } catch(_) {}
-    return;
-  }
-  const data = await r.json();
-  transferStatus.textContent = `Success! Ref ${data.reference}`;
 });
+
+document.getElementById("connectBank").onclick = async () => {
+  try {
+    const res = await fetch("/api/bank-connect", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId })
+    });
+    if (!res.ok) throw new Error("BANK_AUTH_FAIL");
+    show("funding");
+    document.getElementById("fundDetails").innerText = 
+      `Sending $${amount} to ${recipient} from ${currentBank}.`;
+  } catch (err) {
+    console.error("Quantum Pay Error:", err.message);
+    alert("Please try again."); // small retry hint, no error text
+  }
+};
+
+document.getElementById("confirmFund").onclick = async () => {
+  try {
+    const res = await fetch("/api/fund", { method: "POST" });
+    if (!res.ok) throw new Error("FUNDING_ERROR");
+    show("success");
+  } catch (err) {
+    console.error("Quantum Pay Error:", err.message);
+    alert("Payment failed. Please retry.");
+  }
+};
+
+document.getElementById("restart").onclick = () => {
+  sessionId = Date.now().toString();
+  show("pay");
+};
