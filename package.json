@@ -1,8 +1,8 @@
 {
   "name": "quantum-pay",
   "version": "1.0.0",
-  "main": "server.js",
   "type": "module",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
@@ -10,3 +10,4 @@
     "express": "^4.19.2"
   }
 }
+
