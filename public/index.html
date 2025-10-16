@@ -5,54 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quantum Pay</title>
     <link rel="stylesheet" href="/style.css" />
-    <style>
-      body {
-        font-family: system-ui, sans-serif;
-        background: #f9f9f9;
-        color: #0a0a28;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-      header {
-        text-align: center;
-        font-weight: 700;
-        color: #0a0a28;
-        margin-top: 1rem;
-        opacity: 0;
-        animation: fadeIn 0.8s ease forwards;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      header img {
-        height: 22px;
-      }
-      main {
-        width: 100%;
-        max-width: 480px;
-        margin-top: 2rem;
-      }
-      @keyframes fadeIn {
-        to {
-          opacity: 1;
-        }
-      }
-    </style>
   </head>
   <body>
+    <!-- ✅ HEADER SECTION -->
     <header>
       <img
         src="https://cdn-icons-png.flaticon.com/512/6404/6404181.png"
-        alt="card icon"
+        alt="Quantum Pay icon"
       />
-      Quantum Pay
+      <span>Quantum Pay</span>
     </header>
 
+    <!-- ✅ MAIN APP CONTAINER -->
     <main id="app"></main>
 
+    <!-- ✅ LOAD JS LAST -->
     <script src="/app.js" defer></script>
   </body>
 </html>
+
