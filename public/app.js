@@ -1,11 +1,9 @@
 const app = document.getElementById("app");
 
-// Utility: show a new screen
 function show(html) {
   app.innerHTML = html;
 }
 
-// Utility: loading spinner
 function loadingScreen(msg = "Loading...") {
   show(`<div class="center"><div class="loader"></div><p>${msg}</p></div>`);
 }
@@ -20,7 +18,6 @@ function loginScreen() {
       <button id="loginBtn">Login</button>
     </div>
   `);
-
   document.getElementById("loginBtn").onclick = () => {
     loadingScreen("Signing you in...");
     setTimeout(homeScreen, 800);
@@ -34,6 +31,7 @@ function homeScreen() {
       <h2>Welcome!</h2>
       <p>Get started by connecting your accounts.</p>
       <button id="connectBank">Connect your Bank Account</button>
+      <button id="logoutBtn" class="logout">Logout</button>
     </div>
   `);
 
@@ -41,6 +39,7 @@ function homeScreen() {
     loadingScreen("Preparing Mastercard Data Connect...");
     setTimeout(mastercardConsent, 1000);
   };
+  document.getElementById("logoutBtn").onclick = loginScreen;
 }
 
 // --- Mastercard Consent Screen --- //
@@ -61,18 +60,28 @@ function mastercardConsent() {
 function bankSelect() {
   show(`
     <div class="card">
-      <h3>Select your bank</h3>
-      <div class="bank-grid">
-        <button class="bank" id="partner">Partner Bank</button>
-        <button class="bank" id="chase">Chase</button>
-        <button class="bank" id="boa">Bank of America</button>
+      <h3>Select your institution</h3>
+      <div class="bank-grid logos">
+        <button class="bank" id="partner">
+          <img src="https://mypartners.bank/wp-content/themes/partnersbank/images/logo.svg" alt="Partner Bank" />
+        </button>
+        <button class="bank" id="chase">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/f8/JPMorgan_Chase_Logo_2008.svg" alt="Chase" />
+        </button>
+        <button class="bank" id="bofa">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Bank_of_America_logo.svg" alt="BoA" />
+        </button>
+        <button class="bank" id="citi">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Citibank_logo.svg" alt="Citi" />
+        </button>
       </div>
     </div>
   `);
 
   document.getElementById("partner").onclick = () => connectBank("partnerbank-connect");
   document.getElementById("chase").onclick = () => connectBank("chase-connect");
-  document.getElementById("boa").onclick = validatedBank;
+  document.getElementById("bofa").onclick = validatedBank;
+  document.getElementById("citi").onclick = validatedBank;
 }
 
 // --- API CONNECT --- //
@@ -88,12 +97,12 @@ async function connectBank(api) {
     show(`
       <div class="card error">
         <h3>Connection Failed</h3>
-        <p>We couldn’t complete your connection. (${err.message})</p>
+        <p>We couldn’t complete your connection.<br>(${err.message})</p>
         <button id="retryBtn">Try Again</button>
       </div>
     `);
     document.getElementById("retryBtn").onclick = bankSelect;
-    throw err; // this ensures Quantum Metric sees a real exception
+    throw err; // ensures QM captures error
   }
 }
 
@@ -116,22 +125,22 @@ async function activityFeed() {
   const data = await res.json();
 
   const items = data
-    .map(
-      (t) => `
-      <div class="txn">
-        <b>You</b> paid <b>${t.user}</b> $${t.amount} for ${t.desc}
-      </div>`
-    )
+    .map(t => `<div class="txn"><b>You</b> paid <b>${t.user}</b> $${t.amount} for ${t.desc}</div>`)
     .join("");
 
   show(`
     <div class="card">
-      <h3>Your Activity</h3>
+      <div class="header">
+        <h3>Your Activity</h3>
+        <button id="logoutBtn" class="logout">Logout</button>
+      </div>
       ${items}
       <button onclick="homeScreen()">Back Home</button>
     </div>
   `);
+  document.getElementById("logoutBtn").onclick = loginScreen;
 }
 
-// --- INIT --- //
+// INIT
 loginScreen();
+
