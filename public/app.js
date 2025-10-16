@@ -297,7 +297,6 @@ function validatedBank(bankName) {
     homeScreen();
   };
 }
-
 // ====== TROUBLE MODAL ======
 function showTroubleModal() {
   recordEvent("partnerbank_trouble_modal_shown");
@@ -305,40 +304,7 @@ function showTroubleModal() {
 
   const modal = document.createElement("div");
   modal.innerHTML = `
-    <div style="
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    ">
-      <div style="
-        background: white;
-        padding: 30px 40px;
-        border-radius: 12px;
-        max-width: 400px;
-        text-align: center;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-      ">
-        <img src="https://mypartners.bank/wp-content/themes/partnersbank/images/logo.svg" 
-             alt="Partner Bank" 
-             style="width: 120px; margin-bottom: 16px;" />
-        <h3 style="margin-bottom: 16px; color:#e80065;">Having Trouble?</h3>
-        <p style="color:#333;">It looks like you’re having trouble connecting.<br>
-        Please contact your administrator.</p>
-        <button id="adminClose" style="
-          background: #000;
-          color: #fff;
-          border: none;
-          border-radius: 8px;
-          padding: 10px 20px;
-          margin-top: 18px;
-          cursor: pointer;
-        ">OK</button>
-      </div>
-    </div>
+    ...
   `;
   document.body.appendChild(modal);
 
@@ -349,6 +315,7 @@ function showTroubleModal() {
     setTimeout(bankSelect, 1000);
   };
 }
+
 
 // ====== INIT ======
 document.addEventListener("DOMContentLoaded", () => {
