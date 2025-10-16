@@ -126,11 +126,11 @@ async function connectBank(api) {
   try {
     const res = await fetch(`/api/${api}`);
     if (!res.ok) {
-      // make QM see this as a network + JS error
       recordEvent("bank_connection_error", { bank: api, status: res.status });
       setTimeout(() => {
         throw new Error(`QM_CAPTURED_ERROR: ${api} → ${res.status}`);
       }, 10);
+
       if (api.includes("partnerbank")) {
         partnerFailCount++;
         if (partnerFailCount >= 4) return showTroubleModal();
@@ -197,16 +197,30 @@ async function activityFeed() {
 function showTroubleModal() {
   recordEvent("partnerbank_trouble_modal_shown");
 
-  // ✅ make Felix see a real error
+  // ✅ Make Felix classify this as a real technical error
+  console.error("ERROR: PartnerBank Trouble Modal triggered — user failed to connect after 4 attempts");
+  window.dispatchEvent(
+    new CustomEvent("quantumError", {
+      detail: {
+        type: "Bank Connection Error",
+        message: "PartnerBank Trouble Modal — User failed to connect after 4 attempts",
+        code: "API500",
+      },
+    })
+  );
+  if (window.QuantumMetricAPI && QuantumMetricAPI.recordEvent) {
+    QuantumMetricAPI.recordEvent("error_message_displayed", {
+      label: "PartnerBank Trouble Modal",
+      message: "User failed to connect after 4 attempts",
+      severity: "error",
+      code: "API500",
+    });
+  }
+
+  // ✅ Also throw for global listener visibility
   setTimeout(() => {
     throw new Error("QM_CAPTURED_ERROR: PartnerBank Trouble Modal — user failed after 4 attempts");
   }, 10);
-
-  recordEvent("ui_error_message_displayed", {
-    label: "PartnerBank Trouble Modal",
-    message: "User failed to connect after 4 attempts",
-    severity: "error",
-  });
 
   const modal = document.createElement("div");
   modal.innerHTML = `
