@@ -102,7 +102,7 @@ function bankSelect() {
   document.getElementById("citi").onclick = () => accountReview("Citi");
 }
 
-// ===== CONNECT BANK (PartnerBank triggers API 500) =====
+// ===== CONNECT BANK (PartnerBank triggers real 500) =====
 async function connectBank(api) {
   loadingScreen("Connecting to your bank...");
 
@@ -119,12 +119,12 @@ async function connectBank(api) {
   } catch (err) {
     console.error("Bank connection failed:", err);
 
-    // Hidden QM error
+    // Silent backend 500 capture (for QM replay)
     setTimeout(() => {
       throw new Error(`QM_CAPTURED_ERROR: ${api} → 500 Internal Server Error`);
     }, 10);
 
-    // User view
+    // User-facing message
     show(`
       <div class="card error">
         <h3>Connection Failed</h3>
@@ -160,18 +160,26 @@ function accountReview(bankName) {
   `);
 
   document.getElementById("submitBtn").onclick = () => {
-    if (bankName === "Chase") connectionFailed();
-    else connectionSuccess(bankName);
+    if (bankName === "Chase") {
+      // Add 1-second loading before failure
+      loadingScreen("Connecting to Chase...");
+      setTimeout(() => {
+        connectionFailed();
+      }, 1000);
+    } else {
+      connectionSuccess(bankName);
+    }
   };
 }
 
-// ===== FAIL / SUCCESS =====
+// ===== CONNECTION FAIL / SUCCESS =====
 function connectionFailed() {
   fetch("/api/chase-connect", { method: "POST" })
     .then((res) => {
       if (!res.ok) throw new Error(`Server responded with ${res.status}`);
     })
     .catch(() => {
+      // Trigger QM-visible internal error
       setTimeout(() => {
         throw new Error("QM_CAPTURED_ERROR: /api/chase-connect → 500 Internal Server Error");
       }, 10);
