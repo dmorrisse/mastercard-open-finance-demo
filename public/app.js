@@ -1,8 +1,8 @@
-// ====== GLOBAL VARIABLES ======
+// ========== GLOBAL VARIABLES ==========
 let app;
-let partnerFailCount = 0; // track Partner Bank failure attempts
+let partnerFailCount = 0;
 
-// ====== UTILITIES ======
+// ========== UTILITIES ==========
 function show(html) {
   app.innerHTML = html;
 }
@@ -16,23 +16,15 @@ function loadingScreen(message = "Loading...") {
   `);
 }
 
-// ====== EVENT RECORDING (FOR FELIX / QM) ======
-function recordEvent(eventName, metadata = {}) {
-  console.log(`[QM_EVENT] ${eventName}`, metadata);
-
-  // Quantum Metric API hook (if available)
-  if (window.QuantumMetricAPI && QuantumMetricAPI.record) {
-    QuantumMetricAPI.record("event", {
-      event_name: eventName,
-      ...metadata,
-    });
+function recordEvent(name, data = {}) {
+  if (window.QuantumMetricAPI && QuantumMetricAPI.recordEvent) {
+    QuantumMetricAPI.recordEvent(name, data);
+  } else {
+    console.log("QM Event:", name, data);
   }
-
-  // local fallback for testing
-  window.localStorage.setItem("lastQMEvent", eventName);
 }
 
-// ====== LOGIN SCREEN ======
+// ========== LOGIN SCREEN ==========
 function loginScreen() {
   show(`
     <div class="card login">
@@ -52,17 +44,12 @@ function loginScreen() {
       return;
     }
 
-    recordEvent("login_attempt", { username: user });
-
     loadingScreen("Verifying credentials...");
-    setTimeout(() => {
-      recordEvent("login_success", { username: user });
-      homeScreen();
-    }, 1000);
+    setTimeout(homeScreen, 800);
   };
 }
 
-// ====== HOME SCREEN ======
+// ========== HOME SCREEN ==========
 function homeScreen() {
   show(`
     <div class="card home">
@@ -74,42 +61,51 @@ function homeScreen() {
   `);
 
   document.getElementById("connectBank").onclick = () => {
-    recordEvent("home_connect_bank_clicked");
     loadingScreen("Initializing Mastercard Data Connect...");
-    setTimeout(mastercardConsent, 1000);
+    setTimeout(mastercardConsent, 800);
   };
 
-  document.getElementById("logoutBtn").onclick = () => {
-    recordEvent("logout_clicked");
-    loginScreen();
-  };
+  document.getElementById("logoutBtn").onclick = loginScreen;
 }
 
-// ====== MASTERCARD CONSENT ======
+// ========== MASTERCARD CONSENT ==========
 function mastercardConsent() {
   show(`
     <div class="card mc-consent">
       <div class="mc-header">
-        <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" alt="Phone Icon" />
+        <img src="https://cdn-icons-png.flaticon.com/512/483/483356.png" alt="Phone Icon" />
         <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="Mastercard Icon" />
         <img src="https://cdn-icons-png.flaticon.com/512/639/639365.png" alt="Bank Icon" />
       </div>
-      <h2><b>Quantum Pay</b> uses <b>Mastercard Data Connect</b> to link your accounts</h2>
+
+      <h2>
+        <b>Quantum Pay</b> uses <b>Mastercard Data Connect</b> to link your accounts
+      </h2>
+
+      <div class="mc-info">
+        <div class="mc-item">
+          <img src="https://cdn-icons-png.flaticon.com/512/747/747305.png" alt="Lock Icon" />
+          <p>Your data will be securely accessed, processed, and shared</p>
+        </div>
+        <div class="mc-item">
+          <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="Permission Icon" />
+          <p>Your data will only be saved and used with your permission</p>
+        </div>
+      </div>
+
       <button id="nextBtn">Next</button>
+
       <div class="mc-footer">
         <p>Secured by</p>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" height="20" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="Mastercard" />
       </div>
     </div>
   `);
 
-  document.getElementById("nextBtn").onclick = () => {
-    recordEvent("mastercard_consent_next_clicked");
-    bankSelect();
-  };
+  document.getElementById("nextBtn").onclick = bankSelect;
 }
 
-// ====== BANK SELECTION ======
+// ========== BANK SELECTION ==========
 function bankSelect() {
   show(`
     <div class="card">
@@ -131,186 +127,142 @@ function bankSelect() {
     </div>
   `);
 
-  document.getElementById("partner").onclick = () => {
-    recordEvent("bank_select_partnerbank");
-    connectBank("partnerbank-connect");
-  };
-  document.getElementById("chase").onclick = () => {
-    recordEvent("bank_select_chase");
-    accountReview("Chase");
-  };
-  document.getElementById("bofa").onclick = () => {
-    recordEvent("bank_select_bofa");
-    validatedBank("Bank of America");
-  };
-  document.getElementById("citi").onclick = () => {
-    recordEvent("bank_select_citi");
-    accountReview("Citi");
-  };
+  document.getElementById("partner").onclick = () => connectBank("partnerbank-connect");
+  document.getElementById("chase").onclick = () => connectBank("chase-connect");
+  document.getElementById("bofa").onclick = validatedBank;
+  document.getElementById("citi").onclick = validatedBank;
 }
 
-// ====== CONNECT BANK ======
+// ========== CONNECT BANK ==========
 async function connectBank(api) {
   loadingScreen("Connecting to your bank...");
-  recordEvent(`${api}_connection_attempt`);
 
   try {
     const response = await fetch(`/api/${api}`);
 
+    // simulate Partner Bank 500
+    if (api.includes("partnerbank")) {
+      partnerFailCount++;
+      console.warn("Simulated 500 for Partner Bank");
+      recordEvent("bank_connection_error", {
+        bank: "PartnerBank",
+        status: 500,
+        message: "Simulated 500 error"
+      });
+
+      // ✅ make Felix see it as a real error
+      setTimeout(() => {
+        throw new Error("QM_CAPTURED_ERROR: PartnerBank → 500 Internal Server Error");
+      }, 20);
+
+      if (partnerFailCount >= 4) {
+        showTroubleModal();
+      } else {
+        show(`
+          <div class="card error">
+            <h3>Connection Failed</h3>
+            <p>We couldn’t complete your connection.<br>Please try again or contact support.</p>
+            <button id="retryBtn">Try Again</button>
+          </div>
+        `);
+        document.getElementById("retryBtn").onclick = bankSelect;
+      }
+      return;
+    }
+
     if (!response.ok) {
+      recordEvent("bank_connection_error", { bank: api, status: response.status });
+      setTimeout(() => {
+        throw new Error(`QM_CAPTURED_ERROR: ${api} → ${response.status}`);
+      }, 20);
       throw new Error(`Server error: ${response.status}`);
     }
 
-    const data = await response.json();
-
-    if (api.includes("chase")) validatedBank("Chase");
-  } catch (err) {
-    console.error("Bank connection failed:", err);
-    recordEvent(`${api}_api_500_error`, { message: err.message });
-
-    // track partnerbank retries
-    if (api.includes("partnerbank")) {
-      partnerFailCount++;
-      if (partnerFailCount >= 4) {
-        showTroubleModal();
-        return;
-      }
+    if (api.includes("chase")) {
+      validatedBank();
+    } else {
+      validatedBank();
     }
 
-    // QM visible failure
+  } catch (err) {
+    console.error("Bank connection failed:", err);
+    recordEvent("bank_connection_exception", { bank: api, error: err.message });
     setTimeout(() => {
-      throw new Error(`QM_CAPTURED_ERROR: ${api} → 500 Internal Server Error`);
+      throw new Error(`QM_CAPTURED_ERROR: ${api} → ${err.message}`);
     }, 10);
 
     show(`
       <div class="card error">
         <h3>Connection Failed</h3>
-        <p>We couldn’t complete your connection. Please try again later.</p>
-        <button id="retryBtn">Back to Bank Selection</button>
+        <p>We couldn’t complete your connection.<br>Please try again later.</p>
+        <button id="retryBtn">Try Again</button>
       </div>
     `);
-
-    document.getElementById("retryBtn").onclick = () => {
-      recordEvent("bank_retry_clicked", { api });
-      loadingScreen("Reloading bank list...");
-      setTimeout(bankSelect, 800);
-    };
+    document.getElementById("retryBtn").onclick = bankSelect;
   }
 }
 
-// ====== ACCOUNT REVIEW ======
-function accountReview(bankName) {
-  recordEvent("account_review_loaded", { bank: bankName });
-
-  show(`
-    <div class="card mc-consent">
-      <h2>Review your connected accounts</h2>
-      <p>You’re in control. You’ve successfully shared data with <b>Quantum Pay</b> from the following accounts.</p>
-      <div class="feed-item">
-        <strong>${bankName} Checking</strong><br />
-        <span>Ending in 1234</span><br />
-        <span>Balance: $2,700.00</span>
-      </div>
-      <button id="submitBtn">Submit</button>
-      <div class="mc-footer">
-        <span>Secured by</span>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" height="18" />
-      </div>
-    </div>
-  `);
-
-  document.getElementById("submitBtn").onclick = () => {
-    recordEvent("account_submit_clicked", { bank: bankName });
-
-    if (bankName === "Chase") {
-      loadingScreen("Connecting to Chase...");
-      setTimeout(() => {
-        connectionFailed();
-      }, 1000);
-    } else {
-      connectionSuccess(bankName);
-    }
-  };
-}
-
-// ====== CONNECTION FAIL ======
-function connectionFailed() {
-  recordEvent("connection_failed_chase");
-
-  fetch("/api/chase-connect", { method: "POST" })
-    .then((res) => {
-      if (!res.ok) throw new Error(`Server responded with ${res.status}`);
-    })
-    .catch(() => {
-      setTimeout(() => {
-        throw new Error("QM_CAPTURED_ERROR: /api/chase-connect → 500 Internal Server Error");
-      }, 10);
-    });
-
-  show(`
-    <div class="card error">
-      <h3>Connection Failed</h3>
-      <p>We couldn’t complete your connection. Please try again later.</p>
-      <button id="retryBtn">Back to Bank Selection</button>
-    </div>
-  `);
-
-  document.getElementById("retryBtn").onclick = () => {
-    recordEvent("bank_retry_clicked", { bank: "Chase" });
-    loadingScreen("Reloading bank list...");
-    setTimeout(bankSelect, 800);
-  };
-}
-
-// ====== CONNECTION SUCCESS ======
-function connectionSuccess(bankName) {
-  recordEvent("connection_success", { bank: bankName });
-
-  show(`
-    <div class="card success mc-consent">
-      <h2>Connected Successfully</h2>
-      <p>You’ve successfully linked your <b>${bankName}</b> account with Quantum Pay.</p>
-      <button id="finishBtn">Finish</button>
-    </div>
-  `);
-
-  document.getElementById("finishBtn").onclick = () => {
-    recordEvent("finish_clicked", { bank: bankName });
-    homeScreen();
-  };
-}
-
-// ====== VALIDATED BANK ======
-function validatedBank(bankName) {
-  recordEvent("validated_bank_success", { bank: bankName });
-
+// ========== VALIDATED BANK ==========
+function validatedBank() {
   show(`
     <div class="card success">
       <h3>✅ Bank Connected Successfully</h3>
-      <p>Your ${bankName} account has been securely linked to Quantum Pay.</p>
+      <p>Your account has been securely linked to Quantum Pay.</p>
       <button id="continueBtn">Continue</button>
     </div>
   `);
-
-  document.getElementById("continueBtn").onclick = () => {
-    recordEvent("validated_continue_clicked", { bank: bankName });
-    homeScreen();
-  };
+  document.getElementById("continueBtn").onclick = activityFeed;
 }
-// ====== TROUBLE MODAL ======
+
+// ========== ACTIVITY FEED ==========
+async function activityFeed() {
+  loadingScreen("Loading your recent activity...");
+
+  try {
+    const res = await fetch("/api/activity-feed");
+    const data = await res.json();
+
+    const transactions = data
+      .map(
+        (t) =>
+          `<div class="txn"><b>You</b> paid <b>${t.user}</b> $${t.amount} for ${t.desc}</div>`
+      )
+      .join("");
+
+    show(`
+      <div class="card">
+        <div class="header">
+          <h3>Your Activity</h3>
+          <button id="logoutBtn" class="logout">Logout</button>
+        </div>
+        ${transactions}
+        <button id="backBtn">Back Home</button>
+      </div>
+    `);
+
+    document.getElementById("logoutBtn").onclick = loginScreen;
+    document.getElementById("backBtn").onclick = homeScreen;
+  } catch (err) {
+    console.error("Activity feed error:", err);
+    setTimeout(() => {
+      throw new Error(`QM_CAPTURED_ERROR: activity-feed → ${err.message}`);
+    }, 5);
+  }
+}
+
+// ========== TROUBLE MODAL ==========
 function showTroubleModal() {
   recordEvent("partnerbank_trouble_modal_shown");
-  partnerFailCount = 0;
 
-  // ✅ Force Felix to treat this as a true captured error
+  // ✅ Ensure Felix sees this as a true captured error
   setTimeout(() => {
-    throw new Error("QM_CAPTURED_ERROR: PartnerBank Trouble Modal → user failed to connect after 4 attempts");
+    throw new Error("QM_CAPTURED_ERROR: PartnerBank Trouble Modal — user failed after 4 attempts");
   }, 50);
 
-  // ✅ Also explicitly log a named custom event
   recordEvent("partnerbank_trouble_error_displayed", {
+    bank: "PartnerBank",
+    message: "User failed 4 attempts",
     severity: "error",
-    source: "PartnerBank",
   });
 
   const modal = document.createElement("div");
@@ -356,11 +308,11 @@ function showTroubleModal() {
     recordEvent("partnerbank_trouble_modal_closed");
     document.body.removeChild(modal);
     loadingScreen("Returning to bank list...");
-    setTimeout(bankSelect, 1000);
+    setTimeout(bankSelect, 800);
   };
 }
 
-// ====== INIT ======
+// ========== INIT ==========
 document.addEventListener("DOMContentLoaded", () => {
   app = document.getElementById("app");
   loginScreen();
