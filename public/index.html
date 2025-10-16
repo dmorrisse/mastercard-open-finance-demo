@@ -6,6 +6,7 @@
     <title>Quantum Pay</title>
     <link rel="stylesheet" href="/style.css" />
   </head>
+
   <body>
     <!-- ✅ HEADER SECTION -->
     <header>
@@ -17,7 +18,87 @@
     </header>
 
     <!-- ✅ MAIN APP CONTAINER -->
-    <main id="app"></main>
+    <main id="app">
+
+      <!-- 🏠 HOME SCREEN -->
+      <section id="home" class="card">
+        <h2>Welcome to Quantum Pay</h2>
+        <p>Link your bank securely using Mastercard Data Connect.</p>
+        <button id="btnConnect">Connect Your Bank</button>
+        <button id="btnLogout" class="logout">Logout</button>
+      </section>
+
+      <!-- 🏦 BANK SELECTION SCREEN -->
+      <section id="bank-selection" class="card hidden">
+        <h3>Select your institution</h3>
+        <div class="bank-grid">
+          <button class="bank-card" onclick="selectBank('PartnersBank')">
+            <img src="https://mypartners.bank/wp-content/themes/partnersbank/images/logo.svg" alt="Partners Bank" />
+          </button>
+          <button class="bank-card" onclick="selectBank('Chase')">
+            <img src="https://www.logo.wine/a/logo/Chase_Bank/Chase_Bank-Logo.wine.svg" alt="Chase Bank" />
+          </button>
+          <button class="bank-card" onclick="selectBank('Bank of America')">
+            <img src="https://www.logo.wine/a/logo/Bank_of_America/Bank_of_America-Logo.wine.svg" alt="Bank of America" />
+          </button>
+          <button class="bank-card" onclick="selectBank('Citi')">
+            <img src="https://www.logo.wine/a/logo/Citigroup/Citigroup-Logo.wine.svg" alt="Citi" />
+          </button>
+        </div>
+      </section>
+
+      <!-- 💳 MASTERCARD REVIEW SCREEN -->
+      <section id="mc-review" class="card mc-consent hidden">
+        <div class="mc-header">
+          <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" alt="Phone" />
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" />
+          <img src="https://cdn-icons-png.flaticon.com/512/2204/2204340.png" alt="Bank" />
+        </div>
+        <h2><strong>Quantum Pay</strong> uses <strong>Mastercard Data Connect</strong> to link your accounts.</h2>
+        <p>Your data will be securely accessed, processed, and shared only with your permission.</p>
+        <button id="btnMCNext">Next</button>
+        <div class="mc-footer">
+          <span>Secured by</span>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" height="18" />
+        </div>
+      </section>
+
+      <!-- 🧾 ACCOUNT SELECTION SCREEN -->
+      <section id="account-select" class="card hidden">
+        <h2 id="bankNameHeader">Bank Accounts</h2>
+        <p>Review the accounts you selected to share with <strong>Quantum Pay</strong>.</p>
+        <div class="feed-item">
+          <strong>Checking Account</strong><br />
+          <span>Ending in 1234</span><br />
+          <span>Balance: $2,700.00</span>
+        </div>
+        <button id="btnConfirmConnection">Confirm Connection</button>
+        <p style="margin-top: 12px; color: #e80065; cursor:pointer;" id="removeBank">Remove bank</p>
+        <div class="mc-footer">
+          <span>Secured by</span>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" height="18" />
+        </div>
+      </section>
+
+      <!-- ❌ CONNECTION FAILED -->
+      <section id="connection-failed" class="card hidden">
+        <h2>Connection Failed</h2>
+        <p>We couldn’t complete your connection. Please try again later.</p>
+        <button id="btnRetry">Back to Bank Selection</button>
+      </section>
+
+      <!-- ✅ CONNECTION SUCCESS / REVIEW -->
+      <section id="connection-success" class="card mc-consent hidden">
+        <h2>Review your connected accounts</h2>
+        <p>You’ve successfully shared data with <strong>Quantum Pay</strong> from the following accounts.</p>
+        <div class="feed-item">
+          <strong>Citi Checking</strong><br />
+          <span>Ending in 6543 – Balance $5,800.00</span>
+        </div>
+        <button id="btnSubmitSuccess">Submit</button>
+      </section>
+
+    </main>
 
     <!-- ✅ LOAD JS LAST -->
     <script src="/app.js" defer></script>
