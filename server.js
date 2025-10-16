@@ -1,30 +1,44 @@
+// ====== BASIC EXPRESS SERVER FOR QUANTUM PAY DEMO ======
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 
 const app = express();
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const PORT = process.env.PORT || 3000;
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// serve static files (frontend)
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.json());
 
-// Partner Bank intentionally returns 500
+// ====== DEMO API ROUTES ======
+
+// ✅ Simulated PartnerBank 500
 app.get("/api/partnerbank-connect", (req, res) => {
-  res.status(500).json({ error: "Partner Bank connection failed" });
+  console.log("💥 Simulating PartnerBank 500 Error");
+  res.status(500).json({ error: "PartnerBank internal server error" });
 });
 
-// Chase endpoint (fake)
-app.post("/api/chase-connect", (req, res) => {
-  res.status(500).json({ error: "Chase internal error" });
+// ✅ Simulated Chase funding failure (also 500)
+app.get("/api/chase-connect", (req, res) => {
+  console.log("💥 Simulating Chase funding failure");
+  res.status(500).json({ error: "Chase funding failure" });
 });
 
-// Activity feed placeholder
+// ✅ Activity feed (fake data)
 app.get("/api/activity-feed", (req, res) => {
   res.json([
-    { user: "Liam", amount: 25, desc: "Coffee run" },
-    { user: "Sophia", amount: 60, desc: "Dinner split" },
-    { user: "Noah", amount: 120, desc: "Concert tickets" },
+    { user: "Jane", amount: 45, desc: "Dinner" },
+    { user: "Chris", amount: 120, desc: "Tickets" },
+    { user: "Alex", amount: 30, desc: "Drinks" },
   ]);
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// fallback
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
