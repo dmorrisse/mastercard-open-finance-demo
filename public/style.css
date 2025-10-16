@@ -5,173 +5,16 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   min-height: 100vh;
   margin: 0;
 }
 
-.container {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-  width: 360px;
-  text-align: center;
-}
-
-h1 {
-  font-size: 1.6rem;
-  color: #0b0b33;
-}
-
-h2 {
-  font-size: 1.2rem;
-  margin-top: 1.5rem;
-  color: #0b0b33;
-}
-/* Spinner */
-.loader {
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #f36f21;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  animation: spin 1s linear infinite;
-  margin: 1rem auto;
-}
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 70vh;
-  text-align: center;
-}
-
-.error {
-  color: #b00020;
-}
-
-.bank-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.bank {
-  background: #fff;
-  border: 1px solid #ccc;
-  padding: 0.8rem;
-  border-radius: 8px;
-  font-weight: 500;
-}
-
-.bank:hover {
-  background: #f7f7f7;
-}
-
-.card {
-  max-width: 360px;
-  margin: 3rem auto;
-  background: #fff;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  text-align: center;
-}
-
-.footer {
-  margin-top: 1rem;
-  font-size: 0.8rem;
-  color: #777;
-}
-
-
-button {
-  background: #f36f21;
-  color: #fff;
-  border: none;
-  padding: 0.8rem 1.4rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  margin-top: 1.5rem;
-  width: 100%;
-}
-
-button:hover {
-  background: #e45b08;
-}
-
-input {
-  width: 100%;
-  padding: 0.7rem;
-  margin-top: 0.5rem;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  font-size: 1rem;
-}
-
-.bank-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 1rem;
-}
-
-.bank-btn {
-  background: #f4f4f4;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 0.7rem;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.bank-btn:hover {
-  background: #fff3ec;
-  border-color: #f36f21;
-}
-
-.success {
-  color: #008c48;
-  font-weight: 700;
-}
-
-.error {
-  color: #c62828;
-  font-weight: 700;
-}
-
-.feed {
-  text-align: left;
-  margin-top: 1rem;
-}
-
-.feed-item {
-  background: #fafafa;
-  padding: 0.8rem;
-  border-radius: 10px;
-  margin-bottom: 0.6rem;
-  font-size: 0.95rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
 .brand-header {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 1rem;
+  margin: 1rem 0;
 }
 
 .brand {
@@ -190,6 +33,86 @@ input {
   font-size: 1.4rem;
   font-weight: 700;
   color: #0b0b33;
-  letter-spacing: -0.5px;
 }
 
+.container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+button {
+  background: #f36f21;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.4rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 1rem;
+  width: 100%;
+}
+button:hover { background: #e45b08; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.card {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin: 2rem auto;
+}
+
+.bank-grid {
+  display: grid;
+  gap: 10px;
+}
+.bank img {
+  height: 40px;
+  width: auto;
+}
+.logos img {
+  height: 40px;
+  object-fit: contain;
+}
+
+.loader {
+  border: 4px solid #eee;
+  border-top: 4px solid #f36f21;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  animation: spin 1s linear infinite;
+  margin: 1.2rem auto;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  text-align: center;
+}
+
+.error { color: #b00020; font-weight: 600; }
+
+.logout {
+  background: none;
+  color: #b00020;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+.logout:hover { text-decoration: underline; }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
