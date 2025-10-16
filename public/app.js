@@ -1,7 +1,8 @@
+// ====== GLOBAL VARIABLES ======
 let app;
 let partnerFailCount = 0; // track Partner Bank failure attempts
 
-// ===== Utility Functions =====
+// ====== UTILITIES ======
 function show(html) {
   app.innerHTML = html;
 }
@@ -15,7 +16,23 @@ function loadingScreen(message = "Loading...") {
   `);
 }
 
-// ===== LOGIN =====
+// ====== EVENT RECORDING (FOR FELIX / QM) ======
+function recordEvent(eventName, metadata = {}) {
+  console.log(`[QM_EVENT] ${eventName}`, metadata);
+
+  // Quantum Metric API hook (if available)
+  if (window.QuantumMetricAPI && QuantumMetricAPI.record) {
+    QuantumMetricAPI.record("event", {
+      event_name: eventName,
+      ...metadata,
+    });
+  }
+
+  // local fallback for testing
+  window.localStorage.setItem("lastQMEvent", eventName);
+}
+
+// ====== LOGIN SCREEN ======
 function loginScreen() {
   show(`
     <div class="card login">
@@ -29,13 +46,23 @@ function loginScreen() {
   document.getElementById("loginBtn").onclick = () => {
     const user = document.getElementById("user").value.trim();
     const pass = document.getElementById("pass").value.trim();
-    if (!user || !pass) return alert("Please enter credentials");
+
+    if (!user || !pass) {
+      alert("Please enter your username and password");
+      return;
+    }
+
+    recordEvent("login_attempt", { username: user });
+
     loadingScreen("Verifying credentials...");
-    setTimeout(homeScreen, 1000);
+    setTimeout(() => {
+      recordEvent("login_success", { username: user });
+      homeScreen();
+    }, 1000);
   };
 }
 
-// ===== HOME =====
+// ====== HOME SCREEN ======
 function homeScreen() {
   show(`
     <div class="card home">
@@ -47,14 +74,18 @@ function homeScreen() {
   `);
 
   document.getElementById("connectBank").onclick = () => {
+    recordEvent("home_connect_bank_clicked");
     loadingScreen("Initializing Mastercard Data Connect...");
     setTimeout(mastercardConsent, 1000);
   };
 
-  document.getElementById("logoutBtn").onclick = loginScreen;
+  document.getElementById("logoutBtn").onclick = () => {
+    recordEvent("logout_clicked");
+    loginScreen();
+  };
 }
 
-// ===== MASTERCARD CONSENT =====
+// ====== MASTERCARD CONSENT ======
 function mastercardConsent() {
   show(`
     <div class="card mc-consent">
@@ -72,10 +103,13 @@ function mastercardConsent() {
     </div>
   `);
 
-  document.getElementById("nextBtn").onclick = bankSelect;
+  document.getElementById("nextBtn").onclick = () => {
+    recordEvent("mastercard_consent_next_clicked");
+    bankSelect();
+  };
 }
 
-// ===== BANK SELECTION =====
+// ====== BANK SELECTION ======
 function bankSelect() {
   show(`
     <div class="card">
@@ -97,15 +131,28 @@ function bankSelect() {
     </div>
   `);
 
-  document.getElementById("partner").onclick = () => connectBank("partnerbank-connect");
-  document.getElementById("bofa").onclick = () => validatedBank("Bank of America");
-  document.getElementById("chase").onclick = () => accountReview("Chase");
-  document.getElementById("citi").onclick = () => accountReview("Citi");
+  document.getElementById("partner").onclick = () => {
+    recordEvent("bank_select_partnerbank");
+    connectBank("partnerbank-connect");
+  };
+  document.getElementById("chase").onclick = () => {
+    recordEvent("bank_select_chase");
+    accountReview("Chase");
+  };
+  document.getElementById("bofa").onclick = () => {
+    recordEvent("bank_select_bofa");
+    validatedBank("Bank of America");
+  };
+  document.getElementById("citi").onclick = () => {
+    recordEvent("bank_select_citi");
+    accountReview("Citi");
+  };
 }
 
-// ===== CONNECT BANK (PartnerBank triggers real 500) =====
+// ====== CONNECT BANK ======
 async function connectBank(api) {
   loadingScreen("Connecting to your bank...");
+  recordEvent(`${api}_connection_attempt`);
 
   try {
     const response = await fetch(`/api/${api}`);
@@ -119,8 +166,9 @@ async function connectBank(api) {
     if (api.includes("chase")) validatedBank("Chase");
   } catch (err) {
     console.error("Bank connection failed:", err);
+    recordEvent(`${api}_api_500_error`, { message: err.message });
 
-    // Track PartnerBank failures
+    // track partnerbank retries
     if (api.includes("partnerbank")) {
       partnerFailCount++;
       if (partnerFailCount >= 4) {
@@ -129,12 +177,11 @@ async function connectBank(api) {
       }
     }
 
-    // Silent backend 500 capture (for QM replay)
+    // QM visible failure
     setTimeout(() => {
       throw new Error(`QM_CAPTURED_ERROR: ${api} → 500 Internal Server Error`);
     }, 10);
 
-    // User-facing message
     show(`
       <div class="card error">
         <h3>Connection Failed</h3>
@@ -144,14 +191,17 @@ async function connectBank(api) {
     `);
 
     document.getElementById("retryBtn").onclick = () => {
+      recordEvent("bank_retry_clicked", { api });
       loadingScreen("Reloading bank list...");
       setTimeout(bankSelect, 800);
     };
   }
 }
 
-// ===== ACCOUNT REVIEW =====
+// ====== ACCOUNT REVIEW ======
 function accountReview(bankName) {
+  recordEvent("account_review_loaded", { bank: bankName });
+
   show(`
     <div class="card mc-consent">
       <h2>Review your connected accounts</h2>
@@ -170,8 +220,9 @@ function accountReview(bankName) {
   `);
 
   document.getElementById("submitBtn").onclick = () => {
+    recordEvent("account_submit_clicked", { bank: bankName });
+
     if (bankName === "Chase") {
-      // Add 1-second loading before failure
       loadingScreen("Connecting to Chase...");
       setTimeout(() => {
         connectionFailed();
@@ -182,14 +233,15 @@ function accountReview(bankName) {
   };
 }
 
-// ===== CONNECTION FAIL / SUCCESS =====
+// ====== CONNECTION FAIL ======
 function connectionFailed() {
+  recordEvent("connection_failed_chase");
+
   fetch("/api/chase-connect", { method: "POST" })
     .then((res) => {
       if (!res.ok) throw new Error(`Server responded with ${res.status}`);
     })
     .catch(() => {
-      // Trigger QM-visible internal error
       setTimeout(() => {
         throw new Error("QM_CAPTURED_ERROR: /api/chase-connect → 500 Internal Server Error");
       }, 10);
@@ -204,12 +256,16 @@ function connectionFailed() {
   `);
 
   document.getElementById("retryBtn").onclick = () => {
+    recordEvent("bank_retry_clicked", { bank: "Chase" });
     loadingScreen("Reloading bank list...");
     setTimeout(bankSelect, 800);
   };
 }
 
+// ====== CONNECTION SUCCESS ======
 function connectionSuccess(bankName) {
+  recordEvent("connection_success", { bank: bankName });
+
   show(`
     <div class="card success mc-consent">
       <h2>Connected Successfully</h2>
@@ -217,11 +273,17 @@ function connectionSuccess(bankName) {
       <button id="finishBtn">Finish</button>
     </div>
   `);
-  document.getElementById("finishBtn").onclick = homeScreen;
+
+  document.getElementById("finishBtn").onclick = () => {
+    recordEvent("finish_clicked", { bank: bankName });
+    homeScreen();
+  };
 }
 
-// ===== VALIDATED BANK =====
+// ====== VALIDATED BANK ======
 function validatedBank(bankName) {
+  recordEvent("validated_bank_success", { bank: bankName });
+
   show(`
     <div class="card success">
       <h3>✅ Bank Connected Successfully</h3>
@@ -229,12 +291,16 @@ function validatedBank(bankName) {
       <button id="continueBtn">Continue</button>
     </div>
   `);
-  document.getElementById("continueBtn").onclick = homeScreen;
+
+  document.getElementById("continueBtn").onclick = () => {
+    recordEvent("validated_continue_clicked", { bank: bankName });
+    homeScreen();
+  };
 }
 
-// ===== TROUBLE MODAL =====
+// ====== TROUBLE MODAL ======
 function showTroubleModal() {
-  // Reset count so it doesn’t loop forever
+  recordEvent("partnerbank_trouble_modal_shown");
   partnerFailCount = 0;
 
   const modal = document.createElement("div");
@@ -277,13 +343,14 @@ function showTroubleModal() {
   document.body.appendChild(modal);
 
   document.getElementById("adminClose").onclick = () => {
+    recordEvent("partnerbank_trouble_modal_closed");
     document.body.removeChild(modal);
     loadingScreen("Returning to bank list...");
     setTimeout(bankSelect, 1000);
   };
 }
 
-// ===== INIT =====
+// ====== INIT ======
 document.addEventListener("DOMContentLoaded", () => {
   app = document.getElementById("app");
   loginScreen();
