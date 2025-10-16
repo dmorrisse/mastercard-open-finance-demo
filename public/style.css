@@ -179,15 +179,17 @@ header {
   gap: 10px;
   margin-top: 1.2rem;
   font-weight: 700;
-  font-size: 1.5rem;
-  color: #0a0a28;
+  font-size: 1.7rem;
+  color: #e80065; /* brand color */
   opacity: 0;
   animation: fadeIn 0.8s ease forwards;
 }
 
 header img {
-  height: 36px; /* larger Quantum Pay icon */
+  height: 42px; /* slightly larger icon */
+  filter: hue-rotate(310deg) saturate(1.2); /* tint toward #e80065 tone */
 }
+
 
 /* ====== CONTAINERS ====== */
 main {
