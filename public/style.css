@@ -10,8 +10,9 @@ body {
   background: #fafafa;
   color: #0d0d0d;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column; /* stack header + content */
+  align-items: center;
+  justify-content: flex-start;
   min-height: 100vh;
   padding: 40px 16px;
 }
@@ -20,19 +21,22 @@ body {
 header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 1.2rem;
-  font-weight: 700;
-  font-size: 1.7rem;
+  justify-content: center;
+  gap: 12px;
+  margin: 1.5rem auto;
+  font-weight: 800;
+  font-size: 2rem;
   color: #e80065; /* Quantum Pay brand color */
-  opacity: 0;
+  text-align: center;
   animation: fadeIn 0.8s ease forwards;
 }
 
-/* force header icon to adopt the same pink tone */
+/* Force header icon to match Quantum Pay pink */
 header img {
-  height: 46px;
-  filter: brightness(0) saturate(100%) invert(22%) sepia(95%) saturate(5610%) hue-rotate(316deg) brightness(97%) contrast(108%);
+  height: 52px;
+  width: 52px;
+  object-fit: contain;
+  filter: invert(26%) sepia(92%) saturate(6500%) hue-rotate(320deg) brightness(96%) contrast(105%);
 }
 
 /* ====== CARD CONTAINERS ====== */
@@ -43,9 +47,10 @@ header img {
   padding: 32px 28px;
   max-width: 640px;
   width: 100%;
-  margin: 40px auto;
   text-align: center;
+  margin: 40px auto;
   transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 .card h2 {
