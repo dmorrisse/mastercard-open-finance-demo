@@ -60,23 +60,43 @@ function homeScreen() {
   document.getElementById("logoutBtn").onclick = loginScreen;
 }
 
-// ========== MASTERCARD CONSENT ==========
+// ========== MASTERCARD CONSENT (NEW LAYOUT) ==========
 function mastercardConsent() {
   show(`
-    <div class="card consent">
-      <div class="icons">📱💳🏦</div>
-      <h3>Quantum Pay uses <b>Mastercard Data Connect</b></h3>
-      <p>Your data will be securely accessed, processed, and shared only with your permission.</p>
+    <div class="card mc-consent">
+      <div class="mc-header">
+        <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" alt="Phone Icon" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="Mastercard Icon" />
+        <img src="https://cdn-icons-png.flaticon.com/512/639/639365.png" alt="Bank Icon" />
+      </div>
+
+      <h2>
+        <b>Quantum Pay</b> uses <b>Mastercard Data Connect</b> to link your accounts
+      </h2>
+
+      <div class="mc-info">
+        <div class="mc-item">
+          <img src="https://cdn-icons-png.flaticon.com/512/747/747305.png" alt="Lock Icon" />
+          <p>Your data will be securely accessed, processed, and shared</p>
+        </div>
+        <div class="mc-item">
+          <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="Permission Icon" />
+          <p>Your data will only be saved and used with your permission</p>
+        </div>
+      </div>
+
       <button id="nextBtn">Next</button>
-      <p class="footer">
-        Secured by 
-        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" height="20" />
-      </p>
+
+      <div class="mc-footer">
+        <p>Secured by</p>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="Mastercard" />
+      </div>
     </div>
   `);
 
   document.getElementById("nextBtn").onclick = bankSelect;
 }
+
 
 // ========== BANK SELECTION ==========
 function bankSelect() {
