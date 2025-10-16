@@ -219,4 +219,3 @@ document.addEventListener("DOMContentLoaded", () => {
   app = document.getElementById("app");
   loginScreen();
 });
-
