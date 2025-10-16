@@ -20,7 +20,6 @@ function loginScreen() {
   show(`
     <div class="card login">
       <h2>Sign in to Quantum Pay</h2>
-      <p class="sub">Secure login powered by Mastercard</p>
       <input id="user" placeholder="Username" />
       <input id="pass" type="password" placeholder="Password" />
       <button id="loginBtn">Login</button>
