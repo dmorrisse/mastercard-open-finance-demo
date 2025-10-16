@@ -29,6 +29,73 @@ h2 {
   margin-top: 1.5rem;
   color: #0b0b33;
 }
+/* Spinner */
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #f36f21;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  animation: spin 1s linear infinite;
+  margin: 1rem auto;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  text-align: center;
+}
+
+.error {
+  color: #b00020;
+}
+
+.bank-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bank {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 0.8rem;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.bank:hover {
+  background: #f7f7f7;
+}
+
+.card {
+  max-width: 360px;
+  margin: 3rem auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.footer {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: #777;
+}
+
 
 button {
   background: #f36f21;
