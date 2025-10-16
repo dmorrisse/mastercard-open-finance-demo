@@ -15,6 +15,7 @@ body {
   min-height: 100vh;
 }
 
+/* HEADER */
 header {
   display: flex;
   align-items: center;
@@ -27,8 +28,7 @@ header {
 
 header img {
   height: 46px;
-  filter: brightness(0) saturate(100%) invert(22%) sepia(95%) saturate(5610%)
-    hue-rotate(316deg) brightness(97%) contrast(108%);
+  filter: brightness(0); /* makes it black again */
 }
 
 /* CARD */
@@ -46,6 +46,26 @@ header img {
 .card h2,
 .card h3 {
   margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.card p {
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+/* INPUT FIELDS */
+input {
+  width: 80%;
+  max-width: 300px;
+  margin: 10px 5px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  text-align: center;
 }
 
 /* BUTTONS */
@@ -103,13 +123,46 @@ button.bank.white img {
   object-fit: contain;
 }
 
-/* MASTERCARD SCREENS */
+/* MASTERCARD CONSENT SCREEN */
+.mc-consent .mc-header {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.mc-consent .mc-header img {
+  width: 60px;
+  height: auto;
+  object-fit: contain;
+}
+
+.mc-consent h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
 .mc-consent button {
   background: #e06a1b !important;
+  color: #fff;
 }
 
 .mc-consent button:hover {
   background: #cf5f12 !important;
+}
+
+.mc-consent .mc-footer {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.mc-consent .mc-footer img {
+  height: 20px;
+  margin-left: 6px;
+  vertical-align: middle;
 }
 
 /* LOADER */
@@ -139,3 +192,14 @@ button.bank.white img {
     transform: rotate(360deg);
   }
 }
+
+/* SUCCESS + ERROR */
+.card.success h2,
+.card.success h3 {
+  color: #16a34a;
+}
+
+.card.error h3 {
+  color: #dc2626;
+}
+
