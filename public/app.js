@@ -151,7 +151,7 @@ async function connectBank(api) {
     show(`
       <div class="card error">
         <h3>Connection Failed</h3>
-        <p>We couldn’t complete your connection.</p>
+        <p>We couldn’t complete your connection.Please try again or email us DM@Mastercardconnect.com</p>
         <button id="retryBtn">Try Again</button>
       </div>
     `);
