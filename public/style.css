@@ -117,6 +117,41 @@ button:focus {
   outline: 2px solid #e80065;
   outline-offset: 2px;
 }
+/* ====== EXCEPTION: BANK BUTTONS ====== */
+.bank button,
+button.bank {
+  background: #ffffff !important; /* white background */
+  color: #000 !important; /* text stays dark */
+  border: 1px solid #e6e6e6 !important;
+  border-radius: 12px;
+  height: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  padding: 0; /* remove default padding */
+}
+
+.bank button:hover,
+button.bank:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Logos inside bank buttons */
+.bank button img,
+button.bank img {
+  height: 36px;
+  width: auto;
+  max-width: 80%;
+  object-fit: contain;
+  background: none;
+  filter: none;
+  mix-blend-mode: normal;
+}
+
 
 /* ====== INPUTS ====== */
 input {
