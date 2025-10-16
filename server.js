@@ -1,6 +1,12 @@
 // ====== IMPORTS ======
-const express = require("express");
-const path = require("path");
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// ====== FILEPATH HELPERS ======
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -20,7 +26,7 @@ app.use((req, res, next) => {
 app.get("/api/partnerbank-connect", (req, res) => {
   console.log("⚠️ Simulating Partner Bank API failure (500)");
   res.status(500).json({
-    error: "PartnerBank API500",
+    error: "PartnerBank_API500",
     message: "Partner Bank system unavailable. Please try again later.",
   });
 });
@@ -29,7 +35,7 @@ app.get("/api/partnerbank-connect", (req, res) => {
 app.get("/api/chase-connect", (req, res) => {
   console.log("⚠️ Simulating Chase Funding Error (500)");
   res.status(500).json({
-    error: "ChaseFundingError",
+    error: "ChaseFunding_API500",
     message: "Chase funding source unavailable.",
   });
 });
