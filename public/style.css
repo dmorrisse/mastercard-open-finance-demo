@@ -22,23 +22,25 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  margin: 1.5rem auto;
+  gap: 10px;
+  margin-top: 1.2rem;
   font-weight: 800;
-  font-size: 2rem;
-  color: #e80065; /* Quantum Pay brand color */
+  font-size: 1.9rem;
+  color: #e80065;
   text-align: center;
+  opacity: 0;
   animation: fadeIn 0.8s ease forwards;
 }
 
-/* Force header icon to match Quantum Pay pink */
+/* Use an SVG with currentColor fill so the icon always matches text */
 header img {
-  height: 52px;
-  width: 52px;
+  height: 50px;
+  width: 50px;
   object-fit: contain;
-  filter: invert(26%) sepia(92%) saturate(6500%) hue-rotate(320deg) brightness(96%) contrast(105%);
+  /* Removes filter so it uses the #e80065 color directly from the SVG */
+  filter: none !important;
+  fill: #e80065;
 }
-
 /* ====== CARD CONTAINERS ====== */
 .card {
   background: #fff;
@@ -141,27 +143,30 @@ input:focus {
 }
 
 .bank-card {
-  background: #fff;
-  border: 1px solid #eee;
+  background: #ffffff; /* restore white background */
+  border: 1px solid #e6e6e6;
   border-radius: 12px;
   padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90px;
+  height: 100px; /* normalized height */
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
 }
 
 .bank-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
 .bank-card img {
-  max-height: 40px;
+  max-height: 36px;
   width: auto;
   object-fit: contain;
+  background: transparent;
+  mix-blend-mode: normal; /* stops dark invert issues */
 }
 
 /* ====== ACTIVITY FEED ====== */
