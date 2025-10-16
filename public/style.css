@@ -116,3 +116,13 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   justify-content: space-between;
   align-items: center;
 }
+/* Add to your public/style.css */
+iframe[src*="render.com"],
+iframe[id*="qm"],
+div[id*="qm"],
+div[id*="render"] {
+  display: none !important;
+  height: 0 !important;
+  visibility: hidden !important;
+}
+
