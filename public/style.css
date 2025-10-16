@@ -331,7 +331,7 @@ input:focus {
 button#chase.bank img,
 button#bofa.bank img,
 button#citi.bank img {
-  height: 52px; /* increase size for these smaller SVGs */
+  height: 80px; /* increase size for these smaller SVGs */
   max-width: 90%;
 }
 
