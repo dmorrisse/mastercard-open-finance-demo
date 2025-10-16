@@ -327,3 +327,15 @@ input:focus {
     transform: translateY(0);
   }
 }
+/* ====== FINE-TUNE LOGO SIZES ====== */
+button#chase.bank img,
+button#bofa.bank img,
+button#citi.bank img {
+  height: 52px; /* increase size for these smaller SVGs */
+  max-width: 90%;
+}
+
+button#partner.bank img {
+  height: 38px; /* PartnersBank stays smaller since it's naturally wide */
+}
+
