@@ -1,8 +1,9 @@
 {
   "name": "quantum-pay",
   "version": "1.0.0",
-  "type": "module",
+  "description": "Quantum Pay demo for Mastercard Open Finance",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node server.js"
   },
@@ -10,4 +11,3 @@
     "express": "^4.19.2"
   }
 }
-
