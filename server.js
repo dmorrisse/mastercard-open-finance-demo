@@ -26,8 +26,11 @@ app.use((req, res, next) => {
 app.get("/api/partnerbank-connect", (req, res) => {
   console.log("⚠️ Simulating Partner Bank API failure (500)");
   res.status(500).json({
-    error: "PartnerBank_API500",
+    error: "System Unavailable",
     message: "Partner Bank system unavailable. Please try again later.",
+    errorCode: "ER1037",
+    bank: "Partner Bank",
+    userMessage: "We couldn't complete your connection. Please try again later."
   });
 });
 
